@@ -74,6 +74,9 @@ class BiasInput(BaseModel):
 
 
 # ── Existing routes ───────────────────────────────────────────────
+@app.get("/")
+def home():
+    return {"message": "VeritasAI API is running"}
 
 @app.post("/verify-news")
 def verify(input: NewsInput):
