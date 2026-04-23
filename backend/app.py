@@ -4,6 +4,8 @@ from pydantic import BaseModel
 from typing import List
 import os
 from dotenv import load_dotenv
+from fastapi.responses import FileResponse
+
 
 load_dotenv()
 
@@ -74,9 +76,10 @@ class BiasInput(BaseModel):
 
 
 # ── Existing routes ───────────────────────────────────────────────
+
 @app.get("/")
 def home():
-    return {"message": "VeritasAI API is running"}
+    return FileResponse("index.html")
 
 @app.post("/verify-news")
 def verify(input: NewsInput):
