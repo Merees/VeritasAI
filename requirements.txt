@@ -1,5 +1,32 @@
-newspaper3k
-lxml_html_clean
-fastapi
-uvicorn
-python-dotenv
+# Web Framework
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+
+# Environment Variables
+python-dotenv==1.0.0
+
+# Web Scraping & Article Extraction
+newspaper3k==0.2.8
+lxml_html_clean==0.1.1
+beautifulsoup4==4.12.3
+requests==2.31.0
+
+# LangChain & AI
+langchain==0.1.6
+langchain-community==0.0.19
+langgraph==0.0.20
+
+# Database
+# SQLite is built into Python, no package needed
+
+# Email
+# smtplib and email.mime are built into Python, no packages needed
+
+# Utilities
+# xml.etree.ElementTree is built into Python
+# urllib.parse is built into Python
+# re (regex) is built into Python
+# json is built into Python
+# concurrent.futures is built into Python
+# typing is built into Python
