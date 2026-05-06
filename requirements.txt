@@ -16,7 +16,7 @@ requests==2.31.0
 langchain==0.1.6
 langchain-community==0.0.19
 langgraph==0.0.20
-
+instana
 # Database
 # SQLite is built into Python, no package needed
 
