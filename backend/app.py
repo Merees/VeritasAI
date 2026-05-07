@@ -1,3 +1,12 @@
+from fastapi import FastAPI
+
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
+from opentelemetry.exporter.otlp.proto.http.trace_exporter import OTLPSpanExporter
+
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -23,9 +32,26 @@ from backend.services.newsletter_service import (
 
 app = FastAPI()
 
+# OpenTelemetry setup
+provider = TracerProvider()
+
+trace.set_tracer_provider(provider)
+otlp_exporter = OTLPSpanExporter(
+    endpoint="http://instana-agent.instana-agent:4318/v1/traces"
+)
+
+span_processor = BatchSpanProcessor(otlp_exporter)
+
+provider.add_span_processor(span_processor)
+# Instrument FastAPI
+FastAPIInstrumentor.instrument_app(app)
+
+tracer = trace.get_tracer(__name__)
+
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -95,7 +121,10 @@ def summarize(input: UrlInput):
 
 @app.get("/explore-news")
 def explore(topic: str):
-    return explore_news(topic)
+
+    with tracer.start_as_current_span("explore-news-span"):
+
+        return explore_news(topic)
 
 
 @app.get("/debug-rss")
